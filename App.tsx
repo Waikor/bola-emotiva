@@ -1,53 +1,34 @@
-import React, { useState } from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import 'react-native-gesture-handler';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-const emociones = ['😊', '😠', '😢'];
+import WelcomeScreen from './screens/WelcomeScreen';
+import HomeScreen from './screens/HomeScreen';
+import ChatScreen from './screens/ChatScreen';
+
+type RootStackParamList = {
+  Welcome: undefined;
+  Home: undefined;
+  Chat: undefined;
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
-  const [emoji, setEmoji] = useState('🎭');
-
-  const mostrarEmocion = () => {
-    const index = Math.floor(Math.random() * emociones.length);
-    setEmoji(emociones[index]);
-  };
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Toca para saber tu destino</Text>
-      <Text style={styles.emoji}>{emoji}</Text>
-      <Pressable onPress={mostrarEmocion} style={styles.button}>
-        <Text style={styles.buttonText}>Mostrar emoción</Text>
-      </Pressable>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator 
+        initialRouteName="Welcome"
+        screenOptions={{
+          headerShown: false,
+          contentStyle: { backgroundColor: '#121212' }
+        }}
+      >
+        <Stack.Screen name="Welcome" component={WelcomeScreen} />
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Chat" component={ChatScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#111',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-  },
-  title: {
-    color: '#fff',
-    fontSize: 22,
-    marginBottom: 20,
-  },
-  emoji: {
-    fontSize: 90,
-    marginBottom: 30,
-  },
-  button: {
-    backgroundColor: '#333',
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderRadius: 12,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: '600',
-  },
-});
